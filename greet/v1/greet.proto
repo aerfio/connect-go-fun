@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package greet.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "aerf.io/connect-go-fun/gen/greet/v1;greetv1";
+
+message GreetRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message GreetResponse {
+  string greeting = 1;
+  // User's creation date must be in the past.
+  google.protobuf.Timestamp created_at = 2 [(buf.validate.field).timestamp.lt_now = true];
+}
+
+service GreetService {
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+}
+
+message User {
+  // Simple constraints, like checking that an email address is valid, are
+  // predefined.
+  string email = 1 [(buf.validate.field).string.email = true];
+
+  // For more complex use cases, like comparing fields against each other, we
+  // can write a CEL expression.
+  google.protobuf.Timestamp birth_date = 2;
+  google.protobuf.Timestamp signup_date = 3;
+
+  option (buf.validate.message).cel = {
+    id: "user.signup_date",
+    message: "signup date must be on or after birth date",
+    expression: "this.signup_date >= this.birth_date"
+  };
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
