@@ -9,7 +9,7 @@ SHELL = /usr/bin/env bash -o pipefail
 .PHONY: all
 all: binaries
 
-BUF_VERSION = v1.28.1
+BUF_VERSION = v1.29.0
 BUF = ${CURRENT_DIR}bin/buf-${BUF_VERSION}
 ${BUF}:
 	./hack/go-install-bin.sh "github.com/bufbuild/buf/cmd/buf" $(BUF_VERSION)
@@ -61,3 +61,11 @@ format: ${BUF} ${GCI} ${GOFUMPT}
 	$(GCI) write . --skip-generated -s standard -s default -s "prefix(aerf.io/connect-go-fun)" -s blank -s dot --custom-order --skip-vendor
 	$(GOFUMPT) -w -extra -l .
 	$(BUF) format -w
+
+# https://ko.build/configuration/#local-publishing-options
+.PHONY: ko-deploy-example
+ko-deploy-example: export KO_DOCKER_REPO=kind.local
+ko-deploy-example: export KOCACHE=$(CURRENT_DIR).kocache
+ko-deploy-example:
+	kubectl create ns aerfio --dry-run=client -oyaml | kubectl apply -f -
+	ko apply -f ./k8s/yaml/ --sbom=none -B
