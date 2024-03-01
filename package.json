@@ -1,0 +1,22 @@
+{
+  "name": "connect-go-fun",
+  "version": "1.0.0",
+  "description": "Playing with connect-go a bit, creating fully offline configuration with every protoc plugin installed locally into ./bin directory and used by `buf`. Also, creating simple client/server which can be deployed to local kind cluster with `make ko-deploy-example`.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bufbuild/buf": "^1.29.0",
+    "@bufbuild/protobuf": "^1.7.2",
+    "@bufbuild/protoc-gen-es": "^1.7.2",
+    "@connectrpc/connect": "^1.4.0",
+    "@connectrpc/connect-node": "^1.4.0",
+    "@connectrpc/protoc-gen-connect-es": "^1.4.0",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}
