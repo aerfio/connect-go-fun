@@ -6,9 +6,10 @@ import (
 	"os"
 	"time"
 
-	greetv1 "aerf.io/connect-go-fun/gen/greet/v1"
 	"github.com/nats-io/nats.go"
 	"google.golang.org/protobuf/proto"
+
+	greetv1 "aerf.io/connect-go-fun/gen/greet/v1"
 )
 
 // just start default nats-server config by running just `nats-server`
